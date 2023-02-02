@@ -1,0 +1,33 @@
+package output;
+
+//
+// DO NOT CHANGE!
+// 
+// An ABC program imports this module automatically.
+//
+// A few things to bridge the gap between java and ABC code.
+// A java library may use this to support multiple return types and 
+// functions as first-class citizens in the corresponding ABC program.
+//
+
+public interface RuntimeSupport {
+  
+  static public interface Function2R<T1, T2, R> {
+    public R apply(T1 v1, T2 v2);
+  }
+  
+  static public interface Function3R<T1, T2, T3, R> {
+    public R apply(T1 v1, T2 v2, T3 v3);
+  }
+  
+  static public class ReturnValues2<T1, T2> {
+    public T1 v1;
+    public T2 v2;
+  }
+  
+  static public class ReturnValues3<T1, T2, T3> {
+    public T1 v1;
+    public T2 v2;
+    public T3 v3;
+  }
+}

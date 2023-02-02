@@ -1,0 +1,19 @@
+
+A :: struct {}
+
+anyBenny :: (v: any) -> any { return v; }
+
+anyType :: () {
+  v: any;
+
+  anyBenny(10*42-10+14.2);
+  anyBenny("hi");
+  anyBenny(nil);
+  anyBenny(true || false);
+  
+  a: A;
+  anyBenny(a);
+  v = a;
+  
+  a = (A)v;
+}

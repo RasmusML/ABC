@@ -1,0 +1,334 @@
+
+Array :: struct {
+  elements: [] any;
+  size: i32;
+}
+
+array :: () -> Array {
+  return array(16);
+}
+
+array :: (initial_capacity: i32) -> Array {
+  ensure(initial_capacity > 0, "initial array capacity has to be positive, but is %d.", initial_capacity);
+  
+  result: Array = new;
+  result.elements = new [initial_capacity];
+  result.size = 0;
+  return result;
+}
+
+resize :: (array: Array, new_size: i32) {
+  new_elements: [] any = new [new_size];
+  
+  i: i32 = 0;
+  while (i < array.size) {
+    new_elements[i] = array.elements[i];
+    i = i + 1;
+  }
+  
+  array.elements = new_elements;
+}
+
+insert :: (array: Array, value: any) {
+  insert(array, array.size, value);
+}
+
+insert :: (array: Array, index: i32, value: any) {
+  ensure(index >= 0, "out of bounds: %d, expected non-negative index", index);
+  ensure(index <= array.size, "out of bounds: %d, index should be less than or equal to array size (%d).", index, array.size);
+
+  array.size = array.size + 1;
+  
+  if (array.size > array.elements.length) { resize(array, 2 * array.size); }
+
+  end: i32 = array.size - 1;
+  while (end > index) {
+    array.elements[end] = array.elements[end - 1];
+    end = end - 1;
+  }
+  
+  array.elements[index] = value;
+}
+
+remove :: (array: Array, index: i32) -> any {
+  ensure(index >= 0, "out of bounds: %d, expected non-negative index", index);
+  ensure(index <= array.size - 1, "out of bounds: %d, index should be less than array size (%d).", index, array.size);
+  
+  result: any = array.elements[index];
+  
+  array.size = array.size - 1;
+  
+  at: i32 = index;
+  while (at < array.size) {
+    array.elements[at] = array.elements[at + 1];
+    at = at + 1;
+  }
+  
+  array.elements[array.size] = nil;
+  
+  return result;
+}
+
+reverse :: (array: Array) {
+  reverse(array.elements, array.size);
+}
+
+
+reverse :: (array: [] any, size: i32) {
+  middle: i32 = size / 2;
+  i: i32 = 0;
+  
+  while (i < middle) {
+    n: i32 = size - 1 - i;
+    
+    a: any = array[i];
+    b: any = array[n];
+
+    array[i] = b;
+    array[n] = a;
+
+    i = i + 1;
+  }
+}
+
+Stack :: struct {
+  array: Array;
+}
+
+stack :: () -> Stack {
+  result: Stack = new;
+  result.array = array();
+  return result;
+}
+
+stack :: (initial_capacity: i32) -> Stack {
+  result: Stack = new;
+  result.array = array(initial_capacity);
+  return result;
+}
+
+push :: (stack: Stack, value: any) {
+  insert(stack.array, value);
+}
+
+pop :: (stack: Stack) -> any {
+  return remove(stack.array, stack.array.size - 1);
+}
+
+size :: (stack: Stack) -> i32 {
+  return stack.array.size;
+}
+
+
+Node :: struct {
+  index: i32;
+  value: any;
+  connection_indices: Array;
+}
+
+node :: (value: any) -> Node {
+  result: Node = new;
+  result.index = -1;
+  result.value = value;
+  result.connection_indices = array();
+  return result;
+}
+
+
+Graph :: struct {
+  nodes: Array;
+}
+
+graph :: () -> Graph {
+  result: Graph = new;
+  result.nodes = array();
+  return result;
+}
+
+add :: (graph: Graph, node: Node) -> i32 {
+  node.index = graph.nodes.size;
+  insert(graph.nodes, node);
+  return node.index;
+}
+
+get :: (graph: Graph, index: i32) -> Node {
+  return (Node) graph.nodes.elements[index];
+}
+
+connect :: (graph: Graph, index_A: i32, index_B: i32) {
+  a: Node = get(graph, index_A);
+  b: Node = get(graph, index_B);
+
+  insert(a.connection_indices, index_B);
+  insert(b.connection_indices, index_A);
+}
+
+
+search :: (graph: Graph, source: i32, target: i32) -> Array {
+  return dfs(graph, source, target);
+}
+
+SearchNode :: struct {
+  index: i32;
+  parent_index: i32;
+  discovered: bool;
+}
+
+dfs_prepare :: (graph: Graph) -> [] SearchNode {
+  result: [] SearchNode = new [graph.nodes.size];
+  
+  i: i32 = 0;
+  while (i < graph.nodes.size) {
+    node: Node = get(graph, i);
+    
+    search_node: SearchNode = new;
+    search_node.index = node.index;
+    search_node.parent_index = -1;
+    search_node.discovered = false;
+  
+    result[search_node.index] = search_node;
+    
+    i = i + 1;
+  }
+  
+  return result;
+}
+
+backtrack :: (search_nodes: [] SearchNode, end_index: i32) -> Array {
+  result: Array = array();
+  
+  backtrack_index: i32 = end_index;
+  while (backtrack_index != -1) {
+    s_node: SearchNode = search_nodes[backtrack_index];
+    insert(result, s_node.index);
+    backtrack_index = s_node.parent_index;
+  }
+  
+  reverse(result);
+      
+  return result;
+}
+
+dfs :: (graph: Graph, source: i32, target: i32) -> Array {
+  search_nodes: [] SearchNode = dfs_prepare(graph);
+  
+  pending: Stack = stack(search_nodes.length);
+  push(pending, source);
+  
+  s_source: SearchNode = search_nodes[source];
+  s_source.discovered = true;
+  
+  while (size(pending) > 0) {
+    index: i32 = (i32) pop(pending);
+    s_node: SearchNode = search_nodes[index];
+    node: Node = get(graph, s_node.index);
+    
+    if (s_node.index == target) { 
+      return backtrack(search_nodes, target);
+    }
+    
+    i: i32 = 0;
+    while (i < node.connection_indices.size) {
+      neighbour_index: i32 = (i32) node.connection_indices.elements[i];
+      s_neighbour: SearchNode = search_nodes[neighbour_index];
+      
+      if (!s_neighbour.discovered) {
+        s_neighbour.discovered = true;
+        s_neighbour.parent_index = s_node.index;
+        
+        push(pending, s_neighbour.index);
+      }
+      
+      i = i + 1;
+    }
+  }
+  
+  return nil;
+}
+
+print_path :: (graph: Graph, path: Array) {
+  index0: i32 = (i32) path.elements[0];
+  node0: Node = get(graph, index0);
+  print("%s", node0.value);
+  
+  i: i32 = 1;
+  while (i < path.size) {
+    index: i32 = (i32) path.elements[i];
+    node: Node = get(graph, index);
+    print(" -> %s", node.value);
+    i = i + 1;
+  }
+}
+
+print_graph :: (graph: Graph) {
+  i: i32 = 0;
+  while (i < graph.nodes.size) {
+    node: Node = get(graph, i);
+    
+    print("%s:", node.value);
+    
+    j: i32 = 0;
+    while (j < node.connection_indices.size) {
+      index: i32 = (i32) node.connection_indices.elements[j];
+      node_connection: Node = get(graph, index);
+      
+      print(" %s", node_connection.value);
+      
+      j = j + 1;
+    }
+    
+    print("\n");
+    
+    i = i + 1;
+  }
+}
+
+main :: () {
+  europe: Graph = graph();
+  
+  dk:  i32 = add(europe, node("Denmark"));
+  de:  i32 = add(europe, node("Germany"));
+  pl:  i32 = add(europe, node("Poland"));
+  swe: i32 = add(europe, node("Sweden"));
+  en:  i32 = add(europe, node("England"));
+  ru:  i32 = add(europe, node("Russia"));
+  no:  i32 = add(europe, node("Norway"));
+  fr:  i32 = add(europe, node("France"));
+  es:  i32 = add(europe, node("Spain"));
+  it:  i32 = add(europe, node("Italy"));
+  pt:  i32 = add(europe, node("Portugal"));
+  ua:  i32 = add(europe, node("Ukraine"));
+  
+  connect(europe, dk, de);
+  connect(europe, dk, swe);
+  connect(europe, de, pl);
+  connect(europe, swe, ru);
+  connect(europe, ru, pl);
+  connect(europe, swe, no);
+  connect(europe, de, fr);
+  connect(europe, fr, it);
+  connect(europe, es, fr);
+  connect(europe, pt, es);
+  connect(europe, pl, ua);
+  connect(europe, ru, ua);
+  
+  print("--- Graph Connections ---\n");
+  print_graph(europe);
+  print("\n");
+
+  source: i32 = dk;
+  target: i32 = ua;
+  
+  path: Array = search(europe, source, target);
+  
+  source_node: Node = get(europe, source);
+  target_node: Node = get(europe, target);
+  
+  if (path != nil) {  
+    print("%s and %s are connected!\n", source_node.value, target_node.value);
+    print_path(europe, path);
+  } else {
+    print("%s and %s are NOT connected!\n", source_node.value, target_node.value);
+  }
+}
+

@@ -1,0 +1,27 @@
+
+testX :: (a: .. any) -> [] any { return a; }
+testY :: (a: .. any) -> any  { return a[0]; }
+testZ :: (a: .. any) -> i32  { return a.length; }
+
+test :: (a: i32, v: .. any) {}
+//test2 :: (a: i32, v: .. any) {}
+test2 :: (a: i32, v: .. i32) {}
+test2 :: (a: .. [][] i8) {}
+
+testA :: (v: .. i8) {}
+testB :: (v: i8) { testA(v); }
+
+testRed :: (a: .. any) -> [] any { b: [] any = a; return a; }
+//testBlue :: (a: .. [] any) -> [][] any { return a; }
+
+main :: () {
+  test(10, 12, 14);
+  test2(10, 12, 14);
+  
+  a: [][] i8;
+  test2(a, a, a, a);
+  
+  b: [] i8;
+  c: [] any = testRed(b, b, a[0]);
+  
+}

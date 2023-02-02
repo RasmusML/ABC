@@ -1,0 +1,55 @@
+
+number_math :: () {
+  v1: i32;
+  
+  v1 = -10;
+  v1 = +10;
+  
+  v1 = 20 * 10;
+  v1 = 20 / 10;
+  v1 = 20 % 10;
+  
+  v1 = 20 + 10;
+  v1 = 20 - 10;
+  
+  v1 = 20 << 10;
+  v1 = 20 >> 10;
+  
+  v1 = 20 >>> 10; 
+  
+  v1 = ~v1;
+  
+  v1 = 2147483647 + 1;
+  
+  v2: f32;
+  v2 = 3f;
+  v2 = 3.0f;
+  v2 = 3.f;
+  v2 = .3f;
+  
+  v1 = 1 & 2;
+  v1 = 3 ^ 4;
+  v1 = 5 | 6;
+  
+  v3: i64 = 922337203685477580l + 1;
+}
+
+bool_math :: () {
+  condition: bool;
+  condition = 10 >= 4;
+  condition = 10 <= 4;
+  condition = 10 >= 4;
+  
+  condition = true == true;
+  condition = true != true;
+  
+  condition = true && false;
+  condition = true || false;
+  
+  condition = !condition;
+}
+
+main :: () {
+  number_math();
+  bool_math();
+}

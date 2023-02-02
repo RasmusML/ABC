@@ -1,0 +1,49 @@
+
+Span :: struct {
+  from: i32;
+  to: i32;
+}
+
+Dog :: struct {
+  name: string;
+  happiness_level: i8;
+  age: i32;
+  max_speed: i32;
+  lifespan: Span;
+}
+
+create_span :: (from: i32, to: i32) -> Span {
+  result: Span = new;
+  result.from = from;
+  result.to = to;
+  return result;
+}
+
+create_lassie :: () -> Dog {
+  result: Dog = new;
+  result.name = "lassie";
+  result.happiness_level = 10;
+  result.age = 10;
+  result.max_speed = 5;
+  result.lifespan = create_span(12, 15);
+  return result;
+}
+
+is_happy :: (dog: Dog) -> bool {
+  return dog.happiness_level > 5;
+}
+
+add :: (a: i32, b: i32) -> i32 {
+  return a+b;
+}
+
+main :: () {
+  lassie: Dog = create_lassie();
+  happy: bool = is_happy(lassie);
+  //happy: is_happy(lassie);  // @TODO: better error messaging (line + char)!
+  
+  // misc
+  lassie.lifespan.to = 15 + add(lassie.lifespan.from, 3);
+  result: i32 = add(lassie.lifespan.from, lassie.lifespan.to);
+  result = lassie.lifespan.from + lassie.lifespan.to;
+}

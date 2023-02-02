@@ -1,0 +1,13 @@
+
+// @TODO: add test or support this similar to java.
+
+// valid in java, but not in ABC, since ".." will never be a "perfect match" when looking for function overloads.
+// we could make ".." a perfect match, if another function without varargs is also a perfect match, then just give an error similiar to java.
+testX :: (a: .. any) -> [] any { return a; }
+testX :: (a: .. [] any) -> [][] any { return a; }
+
+main :: () {
+  b: [] i8;
+  c: [] any = testX(b, b);
+}
+

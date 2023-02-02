@@ -1,0 +1,5 @@
+
+print :: (format: string, args: .. any) #lib "Preload";
+ensure :: (condition: bool, errorFormat: string, errorArgs: .. any) #lib "Preload";
+//ensure :: (condition: bool, error: string) #lib "Preload";
+exitProgram :: (code: i32) #lib "Preload";

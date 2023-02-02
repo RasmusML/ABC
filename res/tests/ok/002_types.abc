@@ -1,0 +1,84 @@
+basic :: () {
+
+  _bool: bool;
+  _bool = true;
+  _bool = false;
+  _bool = true ^ false;
+
+  _i8: i8;
+  _i8 = 10;
+  _i8 = -1;
+  _i8 = 0x7f;
+
+  _i16: i16;
+  _i16 = 1000;
+  
+  _i32: i32;
+  _i32 = 1000;
+  _i32 = 0b101;
+  _i32 = 0x1321adc;
+  _i32 = 0b010101;
+
+  _i64: i64;
+  _i64 = 1000;
+  
+  _f32: f32;
+  _f32 = 10.4f;
+  
+  _f64: f64;
+  _f64 = 110.4;
+  
+  _char: char;
+  _char = 'a';
+  //_char = -1; // @TODO
+  
+  s: string;
+  s = "Hello sailor";
+  s = nil;
+  s = "😀";
+}
+
+/*
+Numbers (version 1):
+  - an integer literal is by default i64.
+  - a floating-point literal is by default f64.
+  - a single integer literal will down/up-promote to fit the type and check the its value is within bounds.
+  - a (sub)expression promotes all the parameters to the largest type prior to performing the computation.
+  
+  Up promotion (upwards): 
+    f64
+    f32
+    i64
+    i32
+    i16
+     i8 / char
+  
+  *types at the same level will not be "auto-promoted"
+
+ */
+
+number_inference :: () {
+  v1: i32 = 10;
+  v2: i8 = 10;
+  v3: i32 = v1 + v2;
+  v4: char;
+
+  v10: i32 = 10 + 20 + 30; // i32, i32, i32
+  v11: i64 = 10 + 20 + 30; // i64(i32, i32, i32)
+  
+  v1 = 10 * 10 - 100;
+  v1 = 'c' + 100;
+  
+  
+  v2 = -1000 + 900;
+  v4 = -1 + (100 + 'a');
+  v4 = -(+(-(+1)));
+  v4 = '\t' * '\t' * '\t' + 10;
+}
+
+main :: () {
+  basic();
+  number_inference();
+  
+
+}

@@ -1,0 +1,17 @@
+typechecking for constant expression: "while (true) {}"
+break, continue, 
+scopes creation { } AstScope?
+
+one liner scope: else if
+
+multiple source files / imports
+explicit void return type, fn :: () -> void
+
+implicit type inference: ":="
+
+first-class functions
+  
+assignment shorthand: "+=", "-=", "&=" etc
+
+self-study:
+  postfix

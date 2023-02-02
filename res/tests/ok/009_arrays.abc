@@ -1,0 +1,41 @@
+test :: () -> i8 {
+  return 0;
+}
+
+test2 :: (arr: [][][] i8) -> [][] i8 {
+  return arr[0];
+}
+
+main2 :: () {
+  arr: [] i8;
+  arr[42] = 10;
+
+  arr = new [10];
+  
+  v: i8;
+  v = arr[test()];
+  
+  arr[arr[0]] = 10;
+  arr[arr[test()]] = 10;
+  
+  arr2: [][] i8;
+  arr2[10] = arr;
+  
+  arr2 = new [10] [20];
+  
+  arr3: [][][] i8 = new [test()][test()][arr[10]];
+  arr3[10] = arr2;
+  
+  arr3[10][test()] = arr;
+  
+  arr2 = test2(arr3);
+  v2: i32 = arr2.length;
+  // arr2 = ([][]i8)arr2; // illegal
+  
+  if (arr2[0] != nil) {
+  }
+  
+  if (arr2[0] != arr) {
+  }
+  
+}

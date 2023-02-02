@@ -1,0 +1,55 @@
+
+empty_returns :: () {
+  return;
+}
+
+empty_returns :: (i: i8) {
+  while (true) {
+    if (i > 10) { return; }
+  }
+  
+  if (true) { return; }
+}
+
+get_BMI :: (mass_kg: f32, height_meters: f32) -> f32 {
+  return mass_kg / (height_meters * height_meters);
+}
+
+is_obese :: (mass_kg: f32, height_meters: f32) -> bool {
+  return get_BMI(mass_kg, height_meters) >= 25.0; 
+}
+
+weight_example :: () {
+  // BMI calculations
+  my_weight_kg: f32 = 75.f;
+  my_height_meters: f32 = 1.91f;
+  
+  my_bmi: f32 = get_BMI(my_weight_kg, my_height_meters);
+}
+
+main :: () {
+  weight_example();
+ 
+  age: i32 = 25;
+  
+  if (age > 10) {
+    age = -1;
+  } else {
+    age = 9999;
+  }
+  
+  if (age == 100) {
+  
+    if (age > 200) {
+      k: i32;
+      age = -10;
+    } else {
+    }
+    
+    k: i32;
+  }
+  
+  while (age < 10) {
+    age = age + 1;
+  }
+}

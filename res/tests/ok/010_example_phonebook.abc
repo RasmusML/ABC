@@ -1,0 +1,44 @@
+
+Name :: struct {
+  first: string;
+  last: string;
+}
+
+Contact :: struct {
+  name: Name;
+  phoneNumber: string;
+}
+
+PhoneBook :: struct {
+  contacts: [] Contact;
+}
+
+find_byPhoneNumber :: (phoneBook: PhoneBook, phoneNumber: string) -> Contact {
+  i: i32;
+  while (i < phoneBook.contacts.length) {
+    contact: Contact = phoneBook.contacts[i];
+    // no match, since "==" is by reference.
+    if (phoneNumber == contact.phoneNumber) { return contact; }
+  }
+  
+  return nil;
+}
+
+main :: () {
+  contact1: Contact = new;
+  contact1.phoneNumber = "12121212";
+  contact1.name = new;
+  contact1.name.first= "Peter";
+  contact1.name.last= "Pan";
+
+  phoneBook: PhoneBook = new;
+  phoneBook.contacts = new [100];
+  phoneBook.contacts[0] = contact1;
+  
+  contactsCount: i32 = 0;
+  while (phoneBook.contacts[contactsCount] != nil) {
+    contactsCount = contactsCount + 1;
+  }
+  
+  match: Contact = find_byPhoneNumber(phoneBook, "12121212");
+}

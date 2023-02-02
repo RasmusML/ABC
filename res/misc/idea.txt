@@ -1,0 +1,198 @@
+Train :: struct {
+  drive :: (a: i32, b: bool) -> i32, char;
+}
+
+
+HashTable :: struct <T1, T2> {
+  T1 t1;
+  T1 t2;
+}
+
+test :: <T1, T2> (t1: T1, t2: T2) -> void {
+}
+
+
+
+HashTable :: struct($T1, $T2) {
+  array: T1;
+  array2: T2;
+}
+
+get :: (h: HashTable(i32, bool)) -> bool {
+}
+
+get :: (h: HashTable($T, $R)) -> R {
+}
+
+go :: (v: $T) -> T {
+  return v;
+}
+
+Protocol :: enum {
+  TCP;
+  UDP;
+}
+
+global: i32;
+
+main :: () {  
+  age: i32;
+  age= 10;  
+  
+  table: HashTable(i8, i32);
+  
+  train: Train;
+  train.drive = drive;
+  
+  file: File;
+  open_file(file)
+  defer { close_file(file) };
+  
+  N: i32 = 100;
+  arr: [] int = new [N];
+  arr[0] = 3;
+  
+  protocol: Protocol = Protocol.TCP;
+  print("%, protocol.value);
+  print("%, protocol.name);
+  
+  
+  magic: i32;
+  c: char;
+  
+  ensure(10 > 12, "%s %d - failed real bad.", #file, #line);
+  
+  magic, c = train.drive(100, true);
+  
+  if #complete x == {
+    case 2:
+      #through;
+    
+    case 4:
+      return 20;
+      
+    case:
+      return 100;
+  }
+  
+}
+
+
+RT :: #type = i8 | bool;
+
+go :: (v: $T) -> i32 {
+  if v is i8 {
+    vv: i8 = (i8) v;
+  }
+}
+
+drive :: (a: i32, b: bool) -> ok: i32, hi: char #must, string #must {
+  return 10, 'a', "abc";
+}
+
+Fancy :: struct {};
+
+Elsewhere :: struct {
+  a: i32;
+  b: i32;
+  c: i32;
+}
+
+print         :: (format: string, args .. any)    #lib "RuntimeSupport";
+assert        :: (condition: bool, error: string) #lib "RuntimeSupport";
+fancyFunction :: (a: Fancy) -> int, int           #lib "RuntimeSupport";
+
+///////////////////////////////////////////
+
+public class RuntimeSupport/CompiletimeSupport {
+  
+  static public interface Function2R<T1, T2, R> {
+      public R apply(T1 v1, T2 v2);
+  }
+  
+  static public interface Function3R<T1, T2, T3, R> {
+      public R apply(T1 v1, T2 v2, T3 v3);
+  }
+  
+  static public class ReturnValues2<T1, T2> {
+    public T1 v1;
+    public T2 v2;
+  }
+  
+  static public class ReturnValues3<T1, T2, T3> {
+    public T1 v1;
+    public T2 v2;
+    public T3 v3;
+  }
+}
+
+public class PreloadModule {
+  
+  default print(String format, Object... args) {
+    System.out.printf(format, args);
+  }
+  
+  default void _assert(boolean condition, String error) {
+    if (condition) return;
+    throw new IllegalStateException(error);
+  }
+}
+
+public class a_new_way {
+  
+  public static void main(String[] args) {
+    new MainModule() {}.main();
+  };
+  
+  static public interface MainModule extends RuntimeSupport, PreloadModule {
+  
+    // auto-generated, inferred by the typechecker
+    // a: Type = type_of(s)
+    
+    static public enum TypeName {
+      I8,
+      I16,
+      I32,
+      String,
+      Array,
+      
+      Train;
+    }
+    
+    static public class Type {
+      TypeName type;
+      String name
+      String[] members;
+    }
+    
+    static public class Train {
+      public Function2R<Integer, Boolean, ReturnValue<Integer, Character>> drive;
+      
+    }
+    
+    default void main() {
+      int age = 0;
+      age = 10;
+      
+      Train train = new Train();
+      train.drive = (a, b) -> drive(a, b);
+
+      int magic;
+      char c;
+      
+      ReturnValue2<Integer, Character> $returnValue1 = train.drive.apply(100, true);
+      
+      magic = returnValue1.v1;
+      c = returnValue1.v2;
+      
+    }
+    
+    default ReturnValue2<Integer, Character> drive(int a, boolean b) {
+      ReturnValues2<Integer, Character> $result = new ReturnValues2();
+      $result.v1 = 10;
+      $result.v2 = 'a';
+      return result;
+      
+    }
+  }
+}

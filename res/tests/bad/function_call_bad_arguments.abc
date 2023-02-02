@@ -1,0 +1,36 @@
+
+Range :: struct {
+  from: f32;
+  to: f32;
+}
+
+Game :: struct {
+  price: Range;
+}
+
+is_too_expensive_ok1 :: (price: f64) -> bool {
+  return price > 100;
+}
+
+is_too_expensive_ok2 :: (price: f32) -> bool {
+  return price > 100;
+}
+
+is_too_expensive_bad :: (price: i32) -> bool {
+  return price > 100;
+}
+
+
+main :: () {
+  price: Range = new;
+  price.from = 200;
+  price.to = 250;
+  
+  game: Game = new;
+  game.price = price;
+  
+  is_too_expensive_ok1(game.price.from);
+  is_too_expensive_ok2(game.price.from);
+  
+  is_too_expensive_bad(game.price.from);
+}

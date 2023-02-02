@@ -1,0 +1,11 @@
+
+main :: () {
+  print("hello %s. Am I old enough to join? I am %d years old.\n", "sailor", 24);
+  ensure(10 < 12, "woops math is hard...");
+  
+  s: string = "hello";
+  print("%d\n", length(s));
+  print("%c\n", char_at(s, 0));
+
+  exit(0);
+}

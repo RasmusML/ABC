@@ -1,0 +1,54 @@
+
+//
+// prime
+//
+
+// "trial division"-algorithm
+is_prime :: (v: i32) -> bool {
+  return is_prime_helper(v, 2, v-1); // @TODO: "end" could be = sqrt(v);
+}
+
+is_prime_helper :: (v: i32, at: i32, end: i32) -> bool {
+  if (at >= end) { return true; }
+  if (v % at == 0) { return false; }
+  return is_prime_helper(v, at+1, end);
+}
+
+prime :: (n: i32) -> i32 {
+  return prime_helper(2, n);
+}
+
+prime_helper :: (at: i32, remaining: i32) -> i32 {
+  if (is_prime(at)) { 
+    if (remaining == 1) { return at; }
+    return prime_helper(at+1, remaining-1);
+  }
+  
+  return prime_helper(at+1, remaining);
+}
+
+//
+// factorial
+//
+factorial :: (n: i32) -> i32 {
+  if (n <= 1) { return 1; }
+  return n * factorial(n-1);
+}
+
+//
+// fibonacci
+//
+fibonacci :: (n: i32) -> i32 {
+  return fibonacci_helper(0, 1, n-1);
+}
+
+fibonacci_helper :: (a: i32, b: i32, n: i32) -> i32 {
+  if (n == 0) { return b; }
+  return fibonacci_helper(b, a+b, n-1);
+}
+
+main :: () {
+  fibo: i32 = fibonacci(50);
+  fact: i32 = factorial(10);
+  prime5: i32 = prime(5);
+}

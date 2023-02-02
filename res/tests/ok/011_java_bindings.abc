@@ -1,0 +1,20 @@
+
+// the compiler does not actual check if the java module has code for these functions and structs.
+A :: struct #lib "NoModule";
+
+hello :: (a: A)               #lib "NoModule";
+print_custom  :: (s: string)  #lib "NoModule";
+print_custom2 :: (s: any)     #lib "NoModule";
+ensure_custom :: (condition: bool, error: string) -> bool #lib "NoModule";
+
+
+main :: () {
+  ensure_custom(10 < 12, "what is math?");
+  
+  a: A;
+  a = new;
+  
+  v: string = "hi";
+  print_custom(v);
+  
+}

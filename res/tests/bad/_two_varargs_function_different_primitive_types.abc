@@ -1,0 +1,12 @@
+
+// @TODO: add test
+
+test1 :: (s: string, v: .. i32) {
+  //test2(s, v);
+}
+
+test2 :: (s: string, v: .. i16) {
+  test1(s, v);
+}
+
+

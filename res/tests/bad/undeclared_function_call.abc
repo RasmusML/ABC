@@ -1,0 +1,4 @@
+
+main :: () {
+  nilo_the_magic_dragon();
+}
